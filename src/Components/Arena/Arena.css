@@ -20,12 +20,11 @@
   border-radius: 10px;
   background-image: linear-gradient(
     to right,
-    #ff8177 0%,
-    #ff867a 0%,
-    #ff8c7f 21%,
-    #f99185 52%,
-    #cf556c 78%,
-    #b12a5b 100%
+    #7acaff 0%,
+    #7fb2ff 21%,
+    #2f87eb 52%,
+    #186bd6 78%,
+    #1040a7 100%
   );
   background-size: 600% 600%;
   animation: gradient-animation 8s ease infinite;
@@ -43,10 +42,12 @@
 }
 
 .boss-content .image-content img {
-  width: 350px;
-  height: 300px;
+  width: 90%;
+  height: auto;
   border-radius: 10px;
   object-fit: cover;
+  margin-bottom:28px;
+
 }
 
 .image-content .health-bar {
@@ -96,14 +97,15 @@
   max-height: 80%;
   padding: 10px;
   border-radius: 10px;
-  background-color: gray;
+  background-color:#2f87eb;
 }
 
 .player .image-content img {
-  width: 250px;
-  height: 300px;
+  width: 30%;
+  height: auto;
   border-radius: 10px;
   object-fit: cover;
+  margin-bottom:28px;
 }
 
 .players-container .active-players {
