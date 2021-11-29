@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, transformCharacterData } from "../../constants";
+import LoadingIndicator from "../LoadingIndicator";
 import cryptoFishies from "../../utils/CryptoFishies.json";
 import "./Arena.css";
 
@@ -12,6 +13,7 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
   const [gameContract, setGameContract] = useState(null);
   const [boss, setBoss] = useState(null);
   const [attackState, setAttackState] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
   const runAttackAction = async () => {
     try {
@@ -22,6 +24,11 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
         await attackTxn.wait();
         console.log("attackTxn:", attackTxn);
         setAttackState("hit");
+
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 4000);
       }
     } catch (error) {
       console.error("Error attacking boss:", error);
@@ -81,19 +88,23 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
 
     if (gameContract) {
       fetchBoss();
-      gameContract.on('AttackComplete', onAttackComplete);
+      gameContract.on("AttackComplete", onAttackComplete);
     }
 
     return () => {
-        if (gameContract) {
-            gameContract.off('AttackComplete', onAttackComplete);
-        }
-    }
+      if (gameContract) {
+        gameContract.off("AttackComplete", onAttackComplete);
+      }
+    };
   }, [gameContract, setCharacterNFT]);
 
   return (
     <div className="arena-container">
-      {/* Replace your Boss UI with this */}
+      {boss && characterNFT && (
+        <div id="toast" className={showToast ? "show" : ""}>
+          <div id="desc">{`💥 ${boss.name} was hit for ${characterNFT.attackDamage}!`}</div>
+        </div>
+      )}
       {boss && (
         <div className="boss-container">
           <div className={`boss-content ${attackState}`}>
@@ -111,6 +122,12 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
               {`💥 Attack ${boss.name}`}
             </button>
           </div>
+          {attackState === "attacking" && (
+            <div className="loading-indicator">
+              <LoadingIndicator />
+              <p>Attacking ⚔️</p>
+            </div>
+          )}
         </div>
       )}
 

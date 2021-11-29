@@ -3,21 +3,26 @@ import "./SelectCharacter.css";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, transformCharacterData } from "../../constants";
 import cryptoFishies from "../../utils/CryptoFishies.json";
+import LoadingIndicator from "../LoadingIndicator";
 
 const SelectCharacter = ({ setCharacterNFT }) => {
   const [characters, setCharacters] = useState([]);
   const [gameContract, setGameContract] = useState(null);
+  const [isMinting, setIsMinting] = useState(false);
 
   // Actions
   const mintCharacterNFTAction = (characterId) => async () => {
     try {
       if (gameContract) {
+        setIsMinting(true);
         console.log("Minting character in progress...");
         const mintTxn = await gameContract.mintCharacterNFT(characterId);
         await mintTxn.wait();
         console.log("mintTxn:", mintTxn);
+        setIsMinting(false);
       }
     } catch (error) {
+      setIsMinting(false);
       console.warn("MintCharacterAction Error:", error);
     }
   };
@@ -35,9 +40,6 @@ const SelectCharacter = ({ setCharacterNFT }) => {
         signer
       );
 
-      /*
-       * This is the big difference. Set our gameContract in state.
-       */
       setGameContract(gameContract);
     } else {
       console.log("Ethereum object not found");
@@ -49,9 +51,6 @@ const SelectCharacter = ({ setCharacterNFT }) => {
       try {
         console.log("Getting contract characters to mint");
 
-        /*
-         * Call contract to get all mint-able characters
-         */
         const charactersTxn = await gameContract.getAllDefaultCharacters();
         console.log("charactersTxn:", charactersTxn);
 
@@ -74,7 +73,9 @@ const SelectCharacter = ({ setCharacterNFT }) => {
      * Add a callback method that will fire when this event is received
      */
     const onCharacterMint = async (sender, tokenId, characterIndex) => {
-        alert(`Your NFT is all done -- see it here: https://testnets.opensea.io/assets/${gameContract}/${tokenId.toNumber()}`);
+      alert(
+        `Your NFT is all done -- see it here: https://testnets.opensea.io/assets/${gameContract}/${tokenId.toNumber()}`
+      );
       console.log(
         `CharacterNFTMinted - sender: ${sender} tokenId: ${tokenId.toNumber()} characterIndex: ${characterIndex.toNumber()}`
       );
@@ -131,6 +132,18 @@ const SelectCharacter = ({ setCharacterNFT }) => {
       {/* Only show this when there are characters in state */}
       {characters.length > 0 && (
         <div className="character-grid">{renderCharacters()}</div>
+      )}
+      {isMinting && (
+        <div className="loading">
+          <div className="indicator">
+            <LoadingIndicator />
+            <p>Minting In Progress...</p>
+          </div>
+          <img
+            src="https://media2.giphy.com/media/61tYloUgq1eOk/giphy.gif?cid=ecf05e47dg95zbpabxhmhaksvoy8h526f96k4em0ndvx078s&rid=giphy.gif&ct=g"
+            alt="Minting loading indicator"
+          />
+        </div>
       )}
     </div>
   );
