@@ -6,14 +6,10 @@ import SelectCharacter from "./Components/SelectCharacter";
 import Arena from './Components/Arena';
 import LoadingIndicator from './Components/LoadingIndicator';
 
-import { CONTRACT_ADDRESS, transformCharacterData } from './constants';
+import { CONTRACT_ADDRESS, transformCharacterData, TWITTER_HANDLE, TWITTER_LINK} from './constants';
 import twitterLogo from "./assets/twitter-logo.svg";
 
 import { ethers } from 'ethers';
-
-// Constants
-const TWITTER_HANDLE = "jovanjester";
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
