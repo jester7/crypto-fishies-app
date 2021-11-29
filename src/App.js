@@ -3,6 +3,8 @@ import "./App.css";
 import cryptoFishies from './utils/CryptoFishies.json';
 
 import SelectCharacter from "./Components/SelectCharacter";
+import Arena from './Components/Arena';
+
 import { CONTRACT_ADDRESS, transformCharacterData } from './constants';
 import twitterLogo from "./assets/twitter-logo.svg";
 
@@ -72,6 +74,8 @@ const App = () => {
        */
     } else if (currentAccount && !characterNFT) {
       return <SelectCharacter setCharacterNFT={setCharacterNFT} />;
+    } else if (currentAccount && characterNFT) {
+      return <Arena characterNFT={characterNFT} />;
     }
   };
 
