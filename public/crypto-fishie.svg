@@ -1,18 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392.13 228.9">
     <defs>
         <style>
+            .stripes {
+                fill: #bff9ff;
+            }
+            .body {
+                fill: #f4ff00;
+            }
             .flipped {
                 transform:scale(-1,1);
                 transform-origin:center;
             }
-            .stripes {
-                fill: #bff9ff;
-            }
-
-            .body {
-                fill: #f4ff00;
-            }
-
             .eye {
                 fill: #fff;
             }
